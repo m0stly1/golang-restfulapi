@@ -3,6 +3,7 @@ package main
 
 import (
 	"github.com/m0stly1/playground1/model"
+	"github.com/m0stly1/playground1/service"
 	"github.com/gorilla/mux"
     "log"
     "net/http"
@@ -13,7 +14,6 @@ import (
 func main() {
 	
 	r := mux.NewRouter()
-
 	r.HandleFunc("/api/message", addMessage).Methods("POST")
 	r.HandleFunc("/api/message/{id:[0-9]+}", getMessage).Methods("GET")
 	r.HandleFunc("/api/message", updateMessage).Methods("PUT")
@@ -39,13 +39,14 @@ func getMessage(w http.ResponseWriter, r *http.Request) {
 	id := mux.Vars(r)["id"]
 
 	if id == "" {
-
-		w.WriteHeader(http.StatusBadRequest)
+		w.WriteHeader(500)
+		fmt.Fprintf(w, "id is required")
 	}
 
+	ps := service.NewMessageService()
+	ps.Get(id)
 
-
-    fmt.Fprintf(w, id)
+	fmt.Fprintf(w, id)
 }
 
 func addMessage(w http.ResponseWriter, r *http.Request) {
