@@ -38,8 +38,9 @@ func getMessage(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	id := mux.Vars(r)["id"]
 
-	if !id {
+	if id == "" {
 
+		w.WriteHeader(http.StatusBadRequest)
 	}
 
 
