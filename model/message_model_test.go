@@ -67,7 +67,7 @@ func TestCreateMessage(t *testing.T){
 
 	m := &Message{
 		Title : "hej hej",
-    	Content : "",
+		Content : "",
 	}
 
 	iscreated, err := CreateMessage(m)

@@ -1,6 +1,7 @@
 package model
 
 import "errors"
+import "strconv"
 
 type Message struct {
 	Id string `json:"id"`
@@ -29,7 +30,9 @@ func Exists(msg_id string) bool{
 }
 
 
-func LastId() int{
+func LastId() string{
 
-	return len(messages) 
+	id := len(messages) + 1
+
+	return strconv.Itoa(id)
 }

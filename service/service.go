@@ -4,28 +4,31 @@ import "github.com/m0stly1/playground1/model"
 
 
 
-type Accessor interface{
-	GetMessage(n string)
-}
-
-type MessageService struct {
-	a Accessor
-}
-
-func NewMessageService (a Accessor) MessageService{
-	return MessageService {
-		a: a,
-	}
+type MessageService interface {
+	Get(id string) (*model.Message, error)
+	Create(*model.Message) (bool, error)
+	Delete(id string) (bool, error)
 }
 
 
-func (p MessageService) Get (n int) (*Message, error){
+type service struct {}
 
-	p := ps.a.GetMessage(n)
 
-	if p.First == ""{
-		return *Message {}, fmt.Errorf("no Person found")
-	}
-
-	return p, nil
+func NewMessageService() MessageService {
+	return &service{}
 }
+
+
+func (*service) Get (id string) (*model.Message, error){
+	return model.GetMessage(id)
+}
+
+
+func (*service) Create (m *model.Message) (bool, error){
+	return model.CreateMessage(m)
+}
+
+func (*service) Delete (id string) (bool, error){
+	return model.DeleteMessage(id)
+}
+
