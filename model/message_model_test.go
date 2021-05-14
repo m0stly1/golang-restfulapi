@@ -1,25 +1,20 @@
 package model
 
-
-
 import (
 	"testing"
 )
 
-
-
-func TestGetMessage(t *testing.T){
+func TestGetMessage(t *testing.T) {
 
 	msg, err := GetMessage("3")
 
-	if msg != nil{
+	if msg != nil {
 		t.Error("Message should not exist")
 	}
 
 	if err == nil {
 		t.Error("should have error msg")
 	}
-
 
 	msg_success, err := GetMessage("0")
 
@@ -33,9 +28,7 @@ func TestGetMessage(t *testing.T){
 
 }
 
-
-
-func TestDeleteMessage(t *testing.T){
+func TestDeleteMessage(t *testing.T) {
 
 	size_before := LastId()
 	removed := DeleteMessage("0")
@@ -46,14 +39,14 @@ func TestDeleteMessage(t *testing.T){
 		msg_success, err := GetMessage("0")
 
 		if msg_success == nil {
-		t.Error("Message should not exist")
+			t.Error("Message should not exist")
 		}
 
 		if err != nil {
 			t.Error("should not have error here")
 		}
 
-		if size_before == size_after{
+		if size_before == size_after {
 			t.Error("message not deleted, size is the same")
 		}
 
@@ -62,23 +55,21 @@ func TestDeleteMessage(t *testing.T){
 
 }
 
-
-func TestCreateMessage(t *testing.T){
+func TestCreateMessage(t *testing.T) {
 
 	m := &Message{
-		Title : "hej hej",
-		Content : "",
+		Title:   "hej hej",
+		Content: "",
 	}
 
 	iscreated, err := CreateMessage(m)
 
-	if iscreated{
+	if iscreated {
 		t.Error("Msg should not be created. Body is empty")
 	}
 
-	if err == nil{
+	if err == nil {
 		t.Error("message is not valid")
 	}
-
 
 }

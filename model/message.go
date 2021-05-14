@@ -4,13 +4,12 @@ import "errors"
 import "strconv"
 
 type Message struct {
-	Id string `json:"id"`
-	Title string `json:"title"`
+	Id      string `json:"id"`
+	Title   string `json:"title"`
 	Content string `json:content`
 }
 
-
-func Validate(m *Message) (bool, error){
+func Validate(m *Message) (bool, error) {
 
 	if m.Content == "" {
 		return false, errors.New("Message is required")
@@ -19,8 +18,7 @@ func Validate(m *Message) (bool, error){
 	return true, nil
 }
 
-
-func Exists(msg_id string) bool{
+func Exists(msg_id string) bool {
 
 	if messages[msg_id] != nil {
 		return true
@@ -29,8 +27,7 @@ func Exists(msg_id string) bool{
 	return false
 }
 
-
-func LastId() string{
+func LastId() string {
 
 	id := len(messages) + 1
 
