@@ -1,8 +1,8 @@
-package model
+package storage
 
 import "errors"
-
-
+import "github.com/m0stly1/playground1/model"
+import "strconv"
 /*
 * - to do
 *
@@ -11,14 +11,12 @@ import "errors"
 *
 */
 
-
-
-var messages = map[string]*Message{
+var messages = map[string]*model.Message{
 	"1": {Id: "1", Title: "first-one", Content: "random first post"},
 	"2": {Id: "2", Title: "secound-one", Content: "random secound post"},
 }
 
-func GetMessage(msg_id string) (*Message, error) {
+func GetMessage(msg_id string) (*model.Message, error) {
 
 	msg_exists := Exists(msg_id)
 
@@ -38,14 +36,14 @@ func DeleteMessage(msg_id string) (bool, error) {
 		return true, nil
 	}
 
-	return false, errors.New("something very serious")
+	return false, errors.New("message not found")
 }
 
-func CreateMessage(msg *Message) (bool, error) {
+func CreateMessage(msg *model.Message) (bool,error) {
 
-	isvalid, err := Validate(msg)
+	err := Validate(msg)
 
-	if !isvalid {
+	if err != nil {
 		return false, err
 	}
 
@@ -56,7 +54,7 @@ func CreateMessage(msg *Message) (bool, error) {
 	return true, nil
 }
 
-func UpdateMessage(msg *Message) (bool, error) {
+func UpdateMessage(msg *model.Message) (bool, error) {
 
 	msg_exists := Exists(msg.Id)
 
@@ -66,4 +64,30 @@ func UpdateMessage(msg *Message) (bool, error) {
 	}
 
 	return false, errors.New("something very serious")
+}
+
+
+func Validate(m *model.Message) error {
+
+	if m.Content == "" {
+		return errors.New("Message is required")
+	}
+
+	return nil
+}
+
+func Exists(msg_id string) bool {
+
+	if messages[msg_id] != nil {
+		return true
+	}
+
+	return false
+}
+
+func LastId() string {
+
+	id := len(messages) + 1
+
+	return strconv.Itoa(id)
 }
