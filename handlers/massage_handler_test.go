@@ -1,14 +1,15 @@
 package handlers
 
 import (
-	"bytes"
 	"github.com/gorilla/mux"
 	"net/http"
 	"net/http/httptest"
 	"testing"
+	"strings"
 )
 
-func TestGetMessage(t *testing.T) {
+
+func TestGetMessage(t *testing.T) { 
 
 	r := mux.NewRouter()
 	r.HandleFunc("/message/{id:[0-9]+}", GetMessage).Methods("GET")
@@ -17,23 +18,62 @@ func TestGetMessage(t *testing.T) {
 
 	defer ts.Close()
 
-	// our hard coded messages
-	ids := []string{"1", "2"}
-	for _, id := range ids {
-		url := ts.URL + "/message/" + id
 
-		resp, err := http.Get(url)
-		if err != nil {
-			t.Fatal(err)
-		}
 
-		if status := resp.StatusCode; status != http.StatusOK {
-			t.Fatalf("wrong status code: got %d want %d", status, http.StatusOK)
-		}
-
+	tt := []struct {
+		name       string
+		testCase   int 
+		input      string
+		statusCode int
+	}{
+		{
+			name:       "Message Exists",
+			testCase:	1,
+			input:      "1",
+			statusCode:   200,
+		},
+		{
+			name:       "Message Exists",
+			testCase:	2,
+			input:      "2",
+			statusCode:   200,
+		},
+		{
+			name:       "Message does not exists",
+			testCase:	3,
+			input:      "500",
+			statusCode:   404,
+		},
+		{
+			name:       "No id",
+			testCase:	4,
+			input:      "",
+			statusCode:   404,
+		},
 	}
 
+
+	for _, tc := range tt {
+		t.Run(tc.name, func(t *testing.T) {
+
+			url := ts.URL + "/message/" + tc.input
+
+			resp, err := http.Get(url)
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			status := resp.StatusCode;
+
+			if status != tc.statusCode{
+				t.Fatalf("wrong status code: got %d want %d on test case %d", status, tc.statusCode, tc.testCase)
+			}
+		})
+	}
 }
+
+
+
 
 func TestGetMessageStatusMethodNotAllowed(t *testing.T) {
 
@@ -56,49 +96,7 @@ func TestGetMessageStatusMethodNotAllowed(t *testing.T) {
 	}
 }
 
-func TestGetMessageStatusNotFound(t *testing.T) {
-
-	r := mux.NewRouter()
-	r.HandleFunc("/message/{id:[0-9]+}", GetMessage).Methods("GET")
-
-	ts := httptest.NewServer(r)
-
-	defer ts.Close()
-
-	url := ts.URL + "/message/32"
-
-	resp, err := http.Get(url)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	if status := resp.StatusCode; status != http.StatusNotFound {
-		t.Fatalf("wrong status code: got %d want %d", status, http.StatusNotFound)
-	}
-}
-
-func TestGetMessageMissingId(t *testing.T) {
-
-	r := mux.NewRouter()
-	r.HandleFunc("/message/{id:[0-9]+}", GetMessage).Methods("GET")
-
-	ts := httptest.NewServer(r)
-
-	defer ts.Close()
-
-	url := ts.URL + "/message/"
-
-	resp, err := http.Get(url)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	if status := resp.StatusCode; status != http.StatusNotFound {
-		t.Fatalf("wrong status code: got %d want %d", status, http.StatusNotFound)
-	}
-}
-
-func TestAddMessage(t *testing.T) {
+func TestAddMessage(t *testing.T) { 
 
 	r := mux.NewRouter()
 	r.HandleFunc("/message/", AddMessage).Methods("POST")
@@ -109,77 +107,143 @@ func TestAddMessage(t *testing.T) {
 
 	url := ts.URL + "/message/"
 
-	message := []byte(`{"title":"test", "content":"body"}`)
-	resp, err := http.Post(url, "application/json", bytes.NewBuffer(message))
 
-	if err != nil {
-		t.Fatal(err)
+	tt := []struct {
+		name       string
+		testCase   int 
+		input      string
+		statusCode int
+	}{
+		{
+			name:       "Error unmarshalling data",
+			testCase:	1,
+			input:      `{"title":"test", "content":,,,"body"}`,
+			statusCode:   500,
+		},
+		{
+			name:       "No Content",
+			testCase:	2,
+			input:      `{"title":"test"}`,
+			statusCode:   500,
+		},
+		{
+			name:       "Valid message 1",
+			testCase:	3,
+			input:      `{"title":"A new Hope (title) ", "content":"A New Content (Hope)"}`,
+			statusCode:   201,
+		},
+		{
+			name:       "Valid message 2",
+			testCase:	4,
+			input:      `{"title":"The title Strikes back ", "content":"The Content Strikes Back"}`,
+			statusCode:   201,
+		},
 	}
 
-	if status := resp.StatusCode; status != http.StatusCreated {
-		t.Fatalf("wrong status code: got %d want %d", status, http.StatusOK)
-	}
-}
 
-func TestAddMessageStatusBadRequest(t *testing.T) {
+	for _, tc := range tt {
+		t.Run(tc.name, func(t *testing.T) {
 
-	r := mux.NewRouter()
-	r.HandleFunc("/message/", AddMessage).Methods("POST")
+			resp, err := http.Post(url, "application/json", strings.NewReader(tc.input))
+			if err != nil {
+				t.Fatal(err)
+			}
 
-	ts := httptest.NewServer(r)
+			status := resp.StatusCode;
 
-	defer ts.Close()
-
-	url := ts.URL + "/message/"
-
-	// syntax error in json request
-	message := []byte(`{"title":"test", "content":,,,"body"}`)
-	resp, err := http.Post(url, "application/json", bytes.NewBuffer(message))
-
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	if status := resp.StatusCode; status != http.StatusBadRequest {
-		t.Fatalf("wrong status code: got %d want %d", status, http.StatusOK)
-	}
-}
-
-func TestAddMessageMissingContent(t *testing.T) {
-
-	r := mux.NewRouter()
-	r.HandleFunc("/message/", AddMessage).Methods("POST")
-
-	ts := httptest.NewServer(r)
-
-	defer ts.Close()
-
-	url := ts.URL + "/message/"
-
-	message := []byte(`{"title":"test"}`)
-	resp, err := http.Post(url, "application/json", bytes.NewBuffer(message))
-
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	if status := resp.StatusCode; status != http.StatusInternalServerError {
-		t.Fatalf("wrong status code: got %d want %d", status, http.StatusInternalServerError)
+			if status != tc.statusCode{
+				t.Fatalf("wrong status code: got %d want %d on test case %d", status, tc.statusCode, tc.testCase)
+			}
+		})
 	}
 }
 
-func TestUpdateMessage(t *testing.T) {
+
+func TestUpdateMessage(t *testing.T) { 
 
 	r := mux.NewRouter()
 	r.HandleFunc("/message/{id:[0-9]+}", UpdateMessage).Methods("PUT")
 
 	ts := httptest.NewServer(r)
 
+	tt := []struct {
+		id		string
+		name       string
+		testCase   int 
+		input      string
+		statusCode int
+	}{
+		{
+			id :		"1",
+			name:       "Error unmarshalling data",
+			testCase:	1,
+			input:      `{"title":"test", "content":,,,"body"}`,
+			statusCode:   500,
+		},
+		{
+			id :		"1",
+			name:       "No Content",
+			testCase:	2,
+			input:      `{"title":"Mandalorian", "content":"no spoilers"}`,
+			statusCode:   201,
+		},
+		{
+			id :		"10",
+			name:       "Message does not exists",
+			testCase:	3,
+			input:      `{"title":"The title Strikes back", "content":"The Content Strikes Back"}`,
+			statusCode:   400,
+		},
+		{
+			id :		"2",
+			name:       "Valid message 2",
+			testCase:	4,
+			input:      `{"title":"The title Strikes back ", "content":"The Content Strikes Back"}`,
+			statusCode:   201,
+		},
+	}
+
+
+	for _, tc := range tt {
+		t.Run(tc.name, func(t *testing.T) {
+
+			url := ts.URL + "/message/" + tc.id
+
+			req, err := http.NewRequest("PUT", url, strings.NewReader(tc.input))
+
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			client := &http.Client{}
+			resp, err := client.Do(req)
+
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			status := resp.StatusCode;
+
+			if status != tc.statusCode{
+				t.Fatalf("wrong status code: got %d want %d on test case %d", status, tc.statusCode, tc.testCase)
+			}
+		})
+	}
+}
+
+
+
+
+func TestDeleteMessage(t *testing.T) {
+
+	r := mux.NewRouter()
+	r.HandleFunc("/message/{id:[0-9]+}", DeleteMessage).Methods("DELETE")
+
+	ts := httptest.NewServer(r)
+
 	url := ts.URL + "/message/1"
 
-	message := []byte(`{"title":"test", "content":"body"}`)
-
-	req, err := http.NewRequest("PUT", url, bytes.NewBuffer(message))
+	req, err := http.NewRequest("DELETE", url, nil)
 
 	if err != nil {
 		t.Fatal(err)
@@ -192,37 +256,7 @@ func TestUpdateMessage(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if status := resp.StatusCode; status != http.StatusCreated {
-		t.Fatalf("wrong status code: got %d want %d", status, http.StatusCreated)
-	}
-}
-
-func TestUpdateMessageInternal(t *testing.T) {
-
-	r := mux.NewRouter()
-	r.HandleFunc("/message/{id:[0-9]+}", UpdateMessage).Methods("PUT")
-
-	ts := httptest.NewServer(r)
-
-	url := ts.URL + "/message/1"
-
-	// syntax error
-	message := []byte(`{"title":"test"`)
-
-	req, err := http.NewRequest("PUT", url, bytes.NewBuffer(message))
-
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	client := &http.Client{}
-	resp, err := client.Do(req)
-
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	if status := resp.StatusCode; status != http.StatusInternalServerError {
-		t.Fatalf("wrong status code: got %d want %d", status, http.StatusInternalServerError)
+	if status := resp.StatusCode; status != http.StatusOK {
+		t.Fatalf("wrong status code: got %d want %d", status, http.StatusOK)
 	}
 }
