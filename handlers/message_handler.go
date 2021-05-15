@@ -3,10 +3,9 @@ package handlers
 import (
 	"encoding/json"
 	"github.com/gorilla/mux"
-	"github.com/m0stly1/playground1/errors"
+	"github.com/m0stly1/playground1/utils"
 	"github.com/m0stly1/playground1/model"
 	"github.com/m0stly1/playground1/service"
-	"io"
 	"net/http"
 )
 
@@ -22,7 +21,7 @@ func GetMessage(w http.ResponseWriter, r *http.Request) {
 
 	if id == "" {
 		w.WriteHeader(http.StatusBadRequest)
-		json.NewEncoder(w).Encode(errors.ServiceError{Message: "id is required"})
+		json.NewEncoder(w).Encode(utils.ServiceError{Message: "id is required"})
 		return
 	}
 
@@ -30,7 +29,7 @@ func GetMessage(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		w.WriteHeader(http.StatusNotFound)
-		json.NewEncoder(w).Encode(errors.ServiceError{Message: "Message not found"})
+		json.NewEncoder(w).Encode(utils.ServiceError{Message: "Message not found"})
 		return
 	}
 
@@ -47,14 +46,14 @@ func AddMessage(w http.ResponseWriter, r *http.Request) {
 	err := json.NewDecoder(r.Body).Decode(&msg)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
-		json.NewEncoder(w).Encode(errors.ServiceError{Message: "Error unmarshalling data"})
+		json.NewEncoder(w).Encode(utils.ServiceError{Message: "Error unmarshalling data"})
 		return
 	}
 
 	result, err2 := s.Create(msg)
 	if err2 != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		json.NewEncoder(w).Encode(errors.ServiceError{Message: "Error saving the message"})
+		json.NewEncoder(w).Encode(utils.ServiceError{Message: "Error saving the message"})
 		return
 	}
 	w.WriteHeader(http.StatusCreated)
@@ -68,7 +67,7 @@ func DeleteMessage(w http.ResponseWriter, r *http.Request) {
 
 	if id == "" {
 		w.WriteHeader(http.StatusNotFound)
-		json.NewEncoder(w).Encode(errors.ServiceError{Message: "Id is required"})
+		json.NewEncoder(w).Encode(utils.ServiceError{Message: "Id is required"})
 		return
 	}
 
@@ -76,7 +75,7 @@ func DeleteMessage(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		json.NewEncoder(w).Encode(errors.ServiceError{Message: "Error removing the message"})
+		json.NewEncoder(w).Encode(utils.ServiceError{Message: "Error removing the message"})
 		return
 	}
 
@@ -94,7 +93,7 @@ func UpdateMessage(w http.ResponseWriter, r *http.Request) {
 
 	if id == "" {
 		w.WriteHeader(http.StatusBadRequest)
-		json.NewEncoder(w).Encode(errors.ServiceError{Message: "id is required"})
+		json.NewEncoder(w).Encode(utils.ServiceError{Message: "id is required"})
 		return
 	}
 
@@ -102,7 +101,7 @@ func UpdateMessage(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		json.NewEncoder(w).Encode(errors.ServiceError{Message: "Error unmarshalling data"})
+		json.NewEncoder(w).Encode(utils.ServiceError{Message: "Error unmarshalling data"})
 		return
 	}
 
@@ -110,7 +109,7 @@ func UpdateMessage(w http.ResponseWriter, r *http.Request) {
 	result, err2 := s.Update(msg)
 	if err2 != nil {
 		w.WriteHeader(http.StatusBadRequest)
-		json.NewEncoder(w).Encode(errors.ServiceError{Message: "Error saving the message"})
+		json.NewEncoder(w).Encode(utils.ServiceError{Message: "Error saving the message"})
 		return
 	}
 	w.WriteHeader(http.StatusCreated)
@@ -118,12 +117,3 @@ func UpdateMessage(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func HealthCheckHandler(w http.ResponseWriter, r *http.Request) {
-	// A very simple health check.
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-
-	// In the future we could report back on the status of our DB, or our cache
-	// (e.g. Redis) by performing a simple PING, and include them in the response.
-	io.WriteString(w, `{"alive": true}`)
-}

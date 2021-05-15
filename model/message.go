@@ -9,6 +9,17 @@ type Message struct {
 	Content string `json:content`
 }
 
+
+/*
+* - to do
+*
+* move logic 
+* 
+*
+*/
+
+
+
 func Validate(m *Message) (bool, error) {
 
 	if m.Content == "" {

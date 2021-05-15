@@ -2,6 +2,17 @@ package model
 
 import "errors"
 
+
+/*
+* - to do
+*
+* fix returns 
+* fix errors
+*
+*/
+
+
+
 var messages = map[string]*Message{
 	"1": {Id: "1", Title: "first-one", Content: "random first post"},
 	"2": {Id: "2", Title: "secound-one", Content: "random secound post"},

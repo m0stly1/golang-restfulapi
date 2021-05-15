@@ -4,6 +4,14 @@ import (
 	"testing"
 )
 
+
+/*
+* mabey add table driven testing here
+*
+* Add test for update
+*/
+
+
 func TestGetMessage(t *testing.T) {
 
 	msg, err := GetMessage("3")
@@ -31,12 +39,12 @@ func TestGetMessage(t *testing.T) {
 func TestDeleteMessage(t *testing.T) {
 
 	size_before := LastId()
-	removed := DeleteMessage("0")
+	removed, _ := DeleteMessage("1")
 	size_after := LastId()
 
 	if !removed {
 
-		msg_success, err := GetMessage("0")
+		msg_success, err := GetMessage("1")
 
 		if msg_success == nil {
 			t.Error("Message should not exist")

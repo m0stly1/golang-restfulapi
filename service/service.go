@@ -11,7 +11,7 @@ type MessageService interface {
 }
 
 type service struct{}
-
+ 
 func NewMessageService() MessageService {
 	return &service{}
 }
