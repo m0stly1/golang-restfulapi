@@ -68,11 +68,9 @@ func DeleteMessage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-<<<<<<< HEAD
+
 	utils.JsonResponse(w, http.StatusOK, result)
-=======
-	utils.JsonResponse(w, http.StatusCreated, result)
->>>>>>> master
+
 }
 
 func UpdateMessage(w http.ResponseWriter, r *http.Request) {
