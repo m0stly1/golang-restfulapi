@@ -1,7 +1,7 @@
 package storage
 
 import "errors"
-import "github.com/m0stly1/playground1/model"
+import "github.com/m0stly1/golang-restfulapi/model"
 import "strconv"
 /*
 * - to do

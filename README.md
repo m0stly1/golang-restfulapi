@@ -6,7 +6,7 @@ RESTful API for a public message board
  - docker run -p 8000:8000 -tid name
 
 **Without Docker**
-  - git clone https://github.com/m0stly1/playground1.git
+  - git clone https://github.com/m0stly1/golang-restfulapi.git
   - go get -u ./...
   - go run main.go
   - http://localhost:8080/
