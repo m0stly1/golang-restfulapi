@@ -9,7 +9,7 @@ RESTful API for a public message board
   - git clone https://github.com/m0stly1/golang-restfulapi.git
   - go get -u ./...
   - go run main.go
-  - http://localhost:8080/
+  - http://localhost:8000/
 
 
 # Get Single Message
