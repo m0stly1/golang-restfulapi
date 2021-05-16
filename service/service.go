@@ -1,7 +1,7 @@
 package service
 
-import "github.com/m0stly1/playground1/storage"
-import "github.com/m0stly1/playground1/model"
+import "github.com/m0stly1/golang-restfulapi/storage"
+import "github.com/m0stly1/golang-restfulapi/model"
 
 type MessageService interface {
 	Get(id string) (*model.Message, error)

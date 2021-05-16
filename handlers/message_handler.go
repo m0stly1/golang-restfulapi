@@ -3,9 +3,9 @@ package handlers
 import (
 	"encoding/json"
 	"github.com/gorilla/mux"
-	"github.com/m0stly1/playground1/model"
-	"github.com/m0stly1/playground1/service"
-	"github.com/m0stly1/playground1/utils"
+	"github.com/m0stly1/golang-restfulapi/model"
+	"github.com/m0stly1/golang-restfulapi/service"
+	"github.com/m0stly1/golang-restfulapi/utils"
 	"net/http"
 )
 

@@ -2,8 +2,8 @@ package main
 
 
 import (
-	"github.com/m0stly1/playground1/router"
-	"github.com/m0stly1/playground1/handlers"
+	"github.com/m0stly1/golang-restfulapi/router"
+	"github.com/m0stly1/golang-restfulapi/handlers"
 	)
 
 

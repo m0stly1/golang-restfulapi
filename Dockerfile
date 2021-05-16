@@ -16,4 +16,4 @@ EXPOSE 8080
 
 RUN go build
 
-CMD ["./playground1"]
+CMD ["./golang-restfulapi"]
