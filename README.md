@@ -114,18 +114,16 @@ Get all messages available in storage
 
 ```json
 {
-	{
-		"1": {
-			"id": "1",
-			"title": "Rogue One: A Star Wars Story",
-			"content": "More Star Wars"
-	},
-		"2": {
-			"id": "2",
-			"title": "Solo: A Star Wars Story",
-			"content": "Almost forgot this one"
-		}
-	}
+    "1": {
+        "id": "1",
+        "title": "Rogue One: A Star Wars Story",
+        "content": "More Star Wars"
+    },
+    "2": {
+        "id": "2",
+        "title": "Solo: A Star Wars Story",
+       	"content": "Almost forgot this one"
+    }
 }
 ```
 
