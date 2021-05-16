@@ -13,7 +13,7 @@ var (
 
 
 func main() {
-	httpRouter.GET("/messages", handlers.GetMessages)
+	httpRouter.GET("/messages/", handlers.GetMessages)
 	httpRouter.GET("/message/{id:[0-9]+}", handlers.GetMessage)
 	httpRouter.POST("/message/", handlers.AddMessage)
 	httpRouter.PUT("/message/{id:[0-9]+}", handlers.UpdateMessage)

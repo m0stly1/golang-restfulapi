@@ -14,8 +14,7 @@ RESTful API for a public message board
 
 # Get Single Message
 
-Get the details of the currently Authenticated User along with basic
-subscription information.
+Get a single message
 
 **URL** : `/message/{id}`
 
@@ -37,8 +36,7 @@ subscription information.
 
 # Create a new message
 
-Get the details of the currently Authenticated User along with basic
-subscription information.
+Create a new message with title and content
 
 **URL** : `/message/`
 
@@ -51,7 +49,7 @@ subscription information.
 	"content": "A Star Wars title"
 }
 ```
-
+## Success Response
 
 **Code** : `201 OK`
 
@@ -62,8 +60,7 @@ true
 
 # Update a message
 
-Get the details of the currently Authenticated User along with basic
-subscription information.
+Update a existing message
 
 **URL** : `/message/{id}`
 
@@ -77,7 +74,7 @@ subscription information.
 }
 ```
 
-
+## Success Response
 **Code** : `201 OK`
 
 **Content examples**
@@ -85,7 +82,52 @@ subscription information.
 true
 ```
 
+# Delete a message
 
+Delete a existing message
+
+**URL** : `/message/{id}`
+
+**Method** : `DELETE`
+
+
+## Success Response
+**Code** : `201 OK`
+
+**Content examples**
+```
+true
+```
+
+# Get all messages
+Get all messages available in storage
+
+**URL** : `/messages/`
+
+**Method** : `GET`
+
+
+## Success Response
+**Code** : `200 OK`
+
+**Content examples**
+
+```json
+{
+	{
+		"1": {
+			"id": "1",
+			"title": "Rogue One: A Star Wars Story",
+			"content": "More Star Wars"
+	},
+		"2": {
+			"id": "2",
+			"title": "Solo: A Star Wars Story",
+			"content": "Almost forgot this one"
+		}
+	}
+}
+```
 
 ## Responses
 | Status Code | Description |
