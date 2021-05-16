@@ -1,16 +1,13 @@
 package main
 
-
 import (
-	"github.com/m0stly1/golang-restfulapi/router"
 	"github.com/m0stly1/golang-restfulapi/handlers"
-	)
-
+	"github.com/m0stly1/golang-restfulapi/router"
+)
 
 var (
 	httpRouter router.Router = router.NewMuxRouter()
 )
-
 
 func main() {
 	httpRouter.GET("/messages/", handlers.GetMessages)
@@ -20,5 +17,3 @@ func main() {
 	httpRouter.DELETE("/message/{id:[0-9]+}", handlers.DeleteMessage)
 	httpRouter.SERVE(":8000")
 }
-
-

@@ -13,23 +13,17 @@ var (
 	s service.MessageService = service.NewMessageService()
 )
 
-
-
-
-func GetMessages (w http.ResponseWriter, r *http.Request) {
+func GetMessages(w http.ResponseWriter, r *http.Request) {
 
 	messages, err := s.GetAll()
 
-
-	if err != nil{
+	if err != nil {
 		utils.JsonResponse(w, http.StatusNotFound, utils.ServiceError{Message: http.StatusText(404)})
 		return
-	} 
-
+	}
 
 	utils.JsonResponse(w, http.StatusOK, messages)
 }
-
 
 func GetMessage(w http.ResponseWriter, r *http.Request) {
 

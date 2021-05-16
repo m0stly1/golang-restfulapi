@@ -2,8 +2,8 @@
 RESTful API for a public message board
 
 **Docker build**
- - docker build -t name
- - docker run -p 8000:8000 -tid name
+ - docker build -t golang-restfulapi .
+ - docker run -p 8000:8000 -tid golang-restfulapi
 
 **Without Docker**
   - git clone https://github.com/m0stly1/golang-restfulapi.git

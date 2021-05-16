@@ -1,52 +1,50 @@
 package storage
 
 import (
-	"testing"
 	"github.com/m0stly1/golang-restfulapi/models"
+	"testing"
 )
-
 
 func TestCreateMessages(t *testing.T) {
 
 	tt := []struct {
-		name       string
-		testCase   int
-		input      *models.Message
-		expected   bool
+		name     string
+		testCase int
+		input    *models.Message
+		expected bool
 	}{
 		{
-			name:       "No Message, Fail",
-			testCase:	1,
-			input:      &models.Message{},
-			expected:   false,
+			name:     "No Message, Fail",
+			testCase: 1,
+			input:    &models.Message{},
+			expected: false,
 		},
 		{
-			name:       "No Content, Fail",
-			testCase:	2,
-			input:      &models.Message{Title: "I do not exist", Content : ""},
-			expected:   false,
+			name:     "No Content, Fail",
+			testCase: 2,
+			input:    &models.Message{Title: "I do not exist", Content: ""},
+			expected: false,
 		},
 		{
-			name:       "Valid message 1",
-			testCase:	3,
-			input:      &models.Message{Title: "This is a new message", Content : "And this is it´s content"},
-			expected:   true,
+			name:     "Valid message 1",
+			testCase: 3,
+			input:    &models.Message{Title: "This is a new message", Content: "And this is it´s content"},
+			expected: true,
 		},
 		{
-			name:       "Valid message 2",
-			testCase:	4,
-			input:      &models.Message{Title: "I do not exist, create me", Content : "And more content"},
-			expected:   true,
+			name:     "Valid message 2",
+			testCase: 4,
+			input:    &models.Message{Title: "I do not exist, create me", Content: "And more content"},
+			expected: true,
 		},
 	}
-
 
 	for _, tc := range tt {
 		t.Run(tc.name, func(t *testing.T) {
 
 			actual, _ := CreateMessage(tc.input)
 
-			if actual != tc.expected{
+			if actual != tc.expected {
 				t.Error("message is not valid")
 			}
 
@@ -55,37 +53,34 @@ func TestCreateMessages(t *testing.T) {
 
 }
 
+func TestUpdateMessageError(t *testing.T) {
 
-
-func TestUpdateMessageError(t *testing.T){
-	
 	tt := []struct {
-		name       string
-		testCase   int 
-		input      *models.Message
-		expected   bool
+		name     string
+		testCase int
+		input    *models.Message
+		expected bool
 	}{
 		{
-			name:       "no message",
-			testCase:	1,
-			input:      &models.Message{},
-			expected:   false,
+			name:     "no message",
+			testCase: 1,
+			input:    &models.Message{},
+			expected: false,
 		},
 		{
-			name:       "none existing id",
-			testCase:	2,
-			input:      &models.Message{Id:"43", Title: "I do not exist"},
-			expected:   false,
+			name:     "none existing id",
+			testCase: 2,
+			input:    &models.Message{Id: "43", Title: "I do not exist"},
+			expected: false,
 		},
 	}
-
 
 	for _, tc := range tt {
 		t.Run(tc.name, func(t *testing.T) {
 
 			actual, _ := UpdateMessage(tc.input)
 
-			if actual != tc.expected{
+			if actual != tc.expected {
 				t.Error("message is not valid")
 			}
 
@@ -94,38 +89,35 @@ func TestUpdateMessageError(t *testing.T){
 
 }
 
+func TestUpdateMessageSuccess(t *testing.T) {
 
-
-func TestUpdateMessageSuccess(t *testing.T){
-	
 	tt := []struct {
-		name       string
-		testCase   int 
-		input      *models.Message
-		expected   bool
+		name     string
+		testCase int
+		input    *models.Message
+		expected bool
 	}{
 		{
-			name:       "Updating message 1",
-			testCase:	1,
-			input:      &models.Message{Id:"2", Title: "I do exist, update me", Content: "Random Content"},
-			expected:   true,
+			name:     "Updating message 1",
+			testCase: 1,
+			input:    &models.Message{Id: "2", Title: "I do exist, update me", Content: "Random Content"},
+			expected: true,
 		},
 		{
-			name:       "Updating message 2",
-			testCase:	2,
-			input:      &models.Message{Id:"2", Title: "I do also exist, update me", Content: "Random Content"},
-			expected:   true,
+			name:     "Updating message 2",
+			testCase: 2,
+			input:    &models.Message{Id: "2", Title: "I do also exist, update me", Content: "Random Content"},
+			expected: true,
 		},
 	}
-
 
 	for _, tc := range tt {
 		t.Run(tc.name, func(t *testing.T) {
 
 			actual, _ := UpdateMessage(tc.input)
 
-			if actual != tc.expected{
-				
+			if actual != tc.expected {
+
 				t.Error("Test Case failed", tc.testCase)
 			}
 
@@ -133,8 +125,6 @@ func TestUpdateMessageSuccess(t *testing.T){
 	}
 
 }
-
-
 
 func TestGetMessage(t *testing.T) {
 

@@ -3,30 +3,20 @@ package storage
 import "errors"
 import "github.com/m0stly1/golang-restfulapi/models"
 import "strconv"
-/*
-* - to do
-*
-* fix returns 
-* fix errors
-*
-*/
 
 var messages = map[string]*models.Message{
-	"1": {Id: "1", Title: "first-one", Content: "random first post"},
-	"2": {Id: "2", Title: "secound-one", Content: "random secound post"},
+	"1": {Id: "1", Title: "Rogue One: A Star Wars Story", Content: "More Star Wars"},
+	"2": {Id: "2", Title: "Solo: A Star Wars Story", Content: "Almost forgot this one"},
 }
 
-func GetMessages()(map[string]*models.Message, error){
+func GetMessages() (map[string]*models.Message, error) {
 
 	if len(messages) < 0 {
 		return nil, errors.New("messages not found")
 	}
 
-
 	return messages, nil
 }
-
-
 
 func GetMessage(msg_id string) (*models.Message, error) {
 
@@ -51,7 +41,7 @@ func DeleteMessage(msg_id string) (bool, error) {
 	return false, errors.New("message not found")
 }
 
-func CreateMessage(msg *models.Message) (bool,error) {
+func CreateMessage(msg *models.Message) (bool, error) {
 
 	err := Validate(msg)
 
@@ -77,7 +67,6 @@ func UpdateMessage(msg *models.Message) (bool, error) {
 
 	return false, errors.New("Message does not exist")
 }
-
 
 func Validate(m *models.Message) error {
 
