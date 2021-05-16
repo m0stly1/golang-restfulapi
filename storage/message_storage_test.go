@@ -2,7 +2,7 @@ package storage
 
 import (
 	"testing"
-	"github.com/m0stly1/playground1/model"
+	"github.com/m0stly1/golang-restfulapi/models"
 )
 
 
@@ -11,31 +11,31 @@ func TestCreateMessages(t *testing.T) {
 	tt := []struct {
 		name       string
 		testCase   int
-		input      *model.Message
+		input      *models.Message
 		expected   bool
 	}{
 		{
 			name:       "No Message, Fail",
 			testCase:	1,
-			input:      &model.Message{},
+			input:      &models.Message{},
 			expected:   false,
 		},
 		{
 			name:       "No Content, Fail",
 			testCase:	2,
-			input:      &model.Message{Title: "I do not exist", Content : ""},
+			input:      &models.Message{Title: "I do not exist", Content : ""},
 			expected:   false,
 		},
 		{
 			name:       "Valid message 1",
 			testCase:	3,
-			input:      &model.Message{Title: "This is a new message", Content : "And this is it´s content"},
+			input:      &models.Message{Title: "This is a new message", Content : "And this is it´s content"},
 			expected:   true,
 		},
 		{
 			name:       "Valid message 2",
 			testCase:	4,
-			input:      &model.Message{Title: "I do not exist, create me", Content : "And more content"},
+			input:      &models.Message{Title: "I do not exist, create me", Content : "And more content"},
 			expected:   true,
 		},
 	}
@@ -62,19 +62,19 @@ func TestUpdateMessageError(t *testing.T){
 	tt := []struct {
 		name       string
 		testCase   int 
-		input      *model.Message
+		input      *models.Message
 		expected   bool
 	}{
 		{
 			name:       "no message",
 			testCase:	1,
-			input:      &model.Message{},
+			input:      &models.Message{},
 			expected:   false,
 		},
 		{
 			name:       "none existing id",
 			testCase:	2,
-			input:      &model.Message{Id:"43", Title: "I do not exist"},
+			input:      &models.Message{Id:"43", Title: "I do not exist"},
 			expected:   false,
 		},
 	}
@@ -101,19 +101,19 @@ func TestUpdateMessageSuccess(t *testing.T){
 	tt := []struct {
 		name       string
 		testCase   int 
-		input      *model.Message
+		input      *models.Message
 		expected   bool
 	}{
 		{
 			name:       "Updating message 1",
 			testCase:	1,
-			input:      &model.Message{Id:"2", Title: "I do exist, update me", Content: "Random Content"},
+			input:      &models.Message{Id:"2", Title: "I do exist, update me", Content: "Random Content"},
 			expected:   true,
 		},
 		{
 			name:       "Updating message 2",
 			testCase:	2,
-			input:      &model.Message{Id:"2", Title: "I do also exist, update me", Content: "Random Content"},
+			input:      &models.Message{Id:"2", Title: "I do also exist, update me", Content: "Random Content"},
 			expected:   true,
 		},
 	}
