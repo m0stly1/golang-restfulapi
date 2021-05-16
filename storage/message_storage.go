@@ -1,7 +1,7 @@
 package storage
 
 import "errors"
-import "github.com/m0stly1/golang-restfulapi/model"
+import "github.com/m0stly1/golang-restfulapi/models"
 import "strconv"
 /*
 * - to do
@@ -11,12 +11,12 @@ import "strconv"
 *
 */
 
-var messages = map[string]*model.Message{
+var messages = map[string]*models.Message{
 	"1": {Id: "1", Title: "first-one", Content: "random first post"},
 	"2": {Id: "2", Title: "secound-one", Content: "random secound post"},
 }
 
-func GetMessages()(map[string]*model.Message, error){
+func GetMessages()(map[string]*models.Message, error){
 
 	if len(messages) < 0 {
 		return nil, errors.New("messages not found")
@@ -28,7 +28,7 @@ func GetMessages()(map[string]*model.Message, error){
 
 
 
-func GetMessage(msg_id string) (*model.Message, error) {
+func GetMessage(msg_id string) (*models.Message, error) {
 
 	msg_exists := Exists(msg_id)
 
@@ -51,7 +51,7 @@ func DeleteMessage(msg_id string) (bool, error) {
 	return false, errors.New("message not found")
 }
 
-func CreateMessage(msg *model.Message) (bool,error) {
+func CreateMessage(msg *models.Message) (bool,error) {
 
 	err := Validate(msg)
 
@@ -66,7 +66,7 @@ func CreateMessage(msg *model.Message) (bool,error) {
 	return true, nil
 }
 
-func UpdateMessage(msg *model.Message) (bool, error) {
+func UpdateMessage(msg *models.Message) (bool, error) {
 
 	msg_exists := Exists(msg.Id)
 
@@ -79,7 +79,7 @@ func UpdateMessage(msg *model.Message) (bool, error) {
 }
 
 
-func Validate(m *model.Message) error {
+func Validate(m *models.Message) error {
 
 	if m.Content == "" {
 		return errors.New("Message is required")

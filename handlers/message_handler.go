@@ -3,7 +3,7 @@ package handlers
 import (
 	"encoding/json"
 	"github.com/gorilla/mux"
-	"github.com/m0stly1/golang-restfulapi/model"
+	"github.com/m0stly1/golang-restfulapi/models"
 	"github.com/m0stly1/golang-restfulapi/service"
 	"github.com/m0stly1/golang-restfulapi/utils"
 	"net/http"
@@ -12,6 +12,8 @@ import (
 var (
 	s service.MessageService = service.NewMessageService()
 )
+
+
 
 
 func GetMessages (w http.ResponseWriter, r *http.Request) {
@@ -50,7 +52,7 @@ func GetMessage(w http.ResponseWriter, r *http.Request) {
 
 func AddMessage(w http.ResponseWriter, r *http.Request) {
 
-	var msg *model.Message
+	var msg *models.Message
 
 	err := json.NewDecoder(r.Body).Decode(&msg)
 
@@ -90,7 +92,7 @@ func DeleteMessage(w http.ResponseWriter, r *http.Request) {
 
 func UpdateMessage(w http.ResponseWriter, r *http.Request) {
 
-	var msg *model.Message
+	var msg *models.Message
 
 	id := mux.Vars(r)["id"]
 
