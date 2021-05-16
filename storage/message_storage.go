@@ -16,6 +16,18 @@ var messages = map[string]*model.Message{
 	"2": {Id: "2", Title: "secound-one", Content: "random secound post"},
 }
 
+func GetMessages()(map[string]*model.Message, error){
+
+	if len(messages) < 0 {
+		return nil, errors.New("messages not found")
+	}
+
+
+	return messages, nil
+}
+
+
+
 func GetMessage(msg_id string) (*model.Message, error) {
 
 	msg_exists := Exists(msg_id)
@@ -24,7 +36,7 @@ func GetMessage(msg_id string) (*model.Message, error) {
 		return messages[msg_id], nil
 	}
 
-	return nil, errors.New("message do not exist")
+	return nil, errors.New("message not found")
 }
 
 func DeleteMessage(msg_id string) (bool, error) {
@@ -63,7 +75,7 @@ func UpdateMessage(msg *model.Message) (bool, error) {
 		return true, nil
 	}
 
-	return false, errors.New("something very serious")
+	return false, errors.New("Message does not exist")
 }
 
 

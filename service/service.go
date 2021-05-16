@@ -5,6 +5,7 @@ import "github.com/m0stly1/playground1/model"
 
 type MessageService interface {
 	Get(id string) (*model.Message, error)
+	GetAll()(map[string]*model.Message, error)
 	Create(*model.Message) (bool, error)
 	Delete(id string) (bool, error)
 	Update(*model.Message) (bool, error)
@@ -14,6 +15,10 @@ type service struct{}
  
 func NewMessageService() MessageService {
 	return &service{}
+}
+
+func (*service) GetAll() (map[string]*model.Message, error) {
+	return storage.GetMessages()
 }
 
 func (*service) Get(id string) (*model.Message, error) {
